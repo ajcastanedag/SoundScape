@@ -1,5 +1,5 @@
 ################################################################################
-Main_Fo <- "C://Users//Cowboybebop//Documents//EAGLE//0.Documents//R Projects//SoundScape"
+Main_Fo <- "C://Users//Cowboybebop//Documents//EAGLE//0.Documents//RProjects//SoundScape"
 ################################################################################
 source("1.Main//2.Functions.R")
 ################################################################################
@@ -14,7 +14,7 @@ ggplot(EntropyWz) +
   scale_fill_viridis("Entropy", limits=c(0.00,1.00), breaks = seq(0.00,1.00,0.25), labels = round(seq(0,1,0.25),2)) +
   ggtitle("Entropy map Würzburg") +
   theme_bw()
-
+################################################################################
 ggplot(EntropyWz) +
   geom_sf(aes(fill = k)) +
   scale_fill_viridis("Entropy",
