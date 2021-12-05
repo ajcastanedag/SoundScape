@@ -1,5 +1,5 @@
 ################################################################################
-Main_Fo <- "C://Users//Cowboybebop//Documents//EAGLE//0.Documents//RProjects//SoundScape"
+Main_Fo <- "C://Users//Cowboybebop//Documents//EAGLE//0.Documents//RProjects//SoundScape//"
 ################################################################################
 source(paste0(Main_Fo,"1.Main//2.Functions.R"))
 ################################################################################
@@ -7,9 +7,10 @@ source(paste0(Main_Fo,"1.Main//2.Functions.R"))
 UrbAtl_Pol <- st_read( paste0(Main_Fo, "\\2.SampleData\\LandCover\\Wurzburg_UA_UC.gpkg"))
 
 # Calculate 
-EntropyWz <- Entropy(UrbAtl_Pol,"class_2018",150,"Hex",1)
+EntropyWz <- Entropy(UrbAtl_Pol,"class_2018",500,"Hex",1)
+
 ################################################################################
-ggplot(EntropyWz) +
+ggplot(EntropyWz3[,1:100]) +
   geom_sf(aes(fill = MFE)) +
   scale_fill_viridis("Entropy", limits=c(0.00,1.00), breaks = seq(0.00,1.00,0.25), labels = round(seq(0,1,0.25),2)) +
   ggtitle("Entropy map Würzburg") +
