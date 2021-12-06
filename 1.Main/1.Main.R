@@ -1,7 +1,25 @@
 ################################################################################
-Main_Fo <- "C://Users//Cowboybebop//Documents//EAGLE//0.Documents//RProjects//SoundScape//"
+################################### LIBRARIES ################################## 
+library(devtools)
+install_github("ajcastanedag/LandCoverEntropy")
 ################################################################################
-source(paste0(Main_Fo,"1.Main//2.Functions.R"))
+ipak <- function(pkg){
+  
+  new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+  
+  if (length(new.pkg)) 
+    
+    install.packages(new.pkg, dependencies = TRUE)
+  
+  sapply(pkg, require, character.only = TRUE)
+  
+}
+# Load libraries
+ipak(c("sp","sf","raster","tidyverse","rgdal","rayshader", "ggplot2","viridis",
+       "ggdark","magrittr", "leaflet","SciViews","crayon","RColorBrewer",
+       "classInt","LandCoverEntropy"))
+################################################################################
+Main_Fo <- "C://Users//Cowboybebop//Documents//EAGLE//0.Documents//RProjects//SoundScape//"
 ################################################################################
 # Load Data (GPKG)
 UrbAtl_Pol <- st_read( paste0(Main_Fo, "\\2.SampleData\\LandCover\\Wurzburg_UA_UC.gpkg"))
@@ -9,12 +27,6 @@ UrbAtl_Pol <- st_read( paste0(Main_Fo, "\\2.SampleData\\LandCover\\Wurzburg_UA_U
 # Calculate 
 EntropyWz <- Entropy(UrbAtl_Pol,"class_2018",500,"Hex",1)
 
-################################################################################
-ggplot(EntropyWz3[,1:100]) +
-  geom_sf(aes(fill = MFE)) +
-  scale_fill_viridis("Entropy", limits=c(0.00,1.00), breaks = seq(0.00,1.00,0.25), labels = round(seq(0,1,0.25),2)) +
-  ggtitle("Entropy map Würzburg") +
-  theme_bw()
 ################################################################################
 ggplot(EntropyWz) +
   geom_sf(aes(fill = k)) +
