@@ -41,3 +41,26 @@ ggsave(filename=paste0(ExportFo,"Stripes.png"), plot, device = "png", dpi = 90, 
 
 
 ################################################################################
+
+
+#weird 4 loop
+
+length(Data$Time) %% 5 == 0
+
+length(Data$Time)/50
+
+Data2 <- data.frame(Time=rep(NA,6116),Ts=NA,Gs=NA,Ns=NA,Hs=NA,Check=NA)
+
+for(i in 1:6116){
+  
+  start <- (i*4)-4+i
+  end <- (i*4)+i
+  
+  Data2$Time[i] <- mean(Data$DateTime[(i*4)-4+i:(i*4)+i])
+  Data2$Ts[i] <- mean(Data$Ts[start:end], na.rm = TRUE)
+  Data2$Gs[i] <- mean(Data$Gs[(i*4)-4+i:(i*4)+i], na.rm = TRUE)
+  Data2$Ns[i] <- mean(Data$Ns[(i*4)-4+i:(i*4)+i], na.rm = TRUE)
+  Data2$Hs[i] <- mean(Data$Hs[(i*4)-4+i:(i*4)+i], na.rm = TRUE)
+  
+}
+
