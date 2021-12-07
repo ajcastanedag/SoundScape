@@ -9,28 +9,29 @@ source(paste0(MainFo,"\\1.Main\\2.Functions.R"))
 ################################################################################
 Penny <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Penny.txt"))
 Svenja <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Svenja.txt"))
+Ringpark <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Ringpark.txt"))
 ################################################################################
 # Using points and single field
-single(Svenja,"Ts")
+Ringpark<-Ringpark[Ringpark$Ns>0.5,]
+single(Ringpark,"Ns")
 # Using all fields
-patch(Svenja)
+patch(Ringpark)
 ################################################################################
 # Using raster/tiles and single field
-ras(Svenja,"Ts","Spectral")
+ras(Ringpark,"Ns","Spectral")
 ################################################################################
 
-Svenja2 <- data.frame(DateTime=Svenja[,1],Val_ID=NA,Val=NA)
+Ringpark2 <- data.frame(DateTime=Ringpark[,1],Val_ID=NA,Val=NA)
 
-for(i in 1:length(Svenja2$DateTime)){
-  Svenja2$Val[i] <- max(Svenja[i,c(-1,-2,-2)])
-  Svenja2$Val_ID[i] <- names(Svenja[i,c(-1,-2,-2)])[which(Svenja[i,c(-1,-2,-2)] == Svenja2$Val[i])]
+for(i in 1:length(Ringpark2$DateTime)){
+  Ringpark2$Val[i] <- max(Ringpark[i,c(-1,-2,-2)])
+  Ringpark2$Val_ID[i] <- names(Ringpark[i,c(-1,-2,-2)])[which(Ringpark[i,c(-1,-2,-2)] == Ringpark2$Val[i])]
 }
 
 
-plot <- ggplot(Svenja2) +
+plot <- ggplot(Ringpark2) +
   geom_vline(mapping=aes(xintercept=DateTime,
-                         color=factor(Val_ID),
-                         alpha=Val)) +
+                         color=factor(Val_ID))) +
   scale_color_manual(values = c('#9f7257ff','#e49e00ff','#376111ff','#9f2b00ff')) +
   geom_point(aes(x=DateTime,y=Val), size=0.01, alpha=0.1) 
 
