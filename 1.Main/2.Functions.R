@@ -66,13 +66,13 @@ patch <- function(Data){
   return((P1 / P2 / P3 / P4))
 }
 ################################################################################
-ras <- function(Data, Field){
+ras <- function(Data, Field, Pal){
   plot <- ggplot(Data, aes(x=DateTime, y=Data[,Field])) +
     stat_density_2d(aes(fill = ..density..), geom = "raster", contour = FALSE) +
     scale_x_datetime(expand = c(0, 0)) +
     scale_y_continuous(expand = c(0, 0)) +
     theme(legend.position='none') +
-    scale_fill_distiller(palette= "Spectral") +
+    scale_fill_distiller(palette= Pal) +
     ylab(Field)
   
   return(plot)
