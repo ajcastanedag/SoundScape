@@ -27,6 +27,16 @@ UrbAtl_Pol <- st_read( paste0(Main_Fo, "\\2.SampleData\\LandCover\\Wurzburg_UA_U
 # Calculate 
 EntropyWz <- Entropy(UrbAtl_Pol,"class_2018",500,"Hex",1)
 
+
+#########################################
+POINT <- st_as_sf(data.frame(lon = c(1,4,6), lat = c(0,0,-3)), coords = c('lon', 'lat'))
+buf.a <- st_buffer(a, 1)
+cIRCLEaREA <- st_intersection(UrbAtl_Pol, buf.a)
+cIRCLEaREA$area <- st_area(cIRCLEaREA)
+#########################################
+
+
+
 ################################################################################
 ggplot(EntropyWz) +
   geom_sf(aes(fill = k)) +

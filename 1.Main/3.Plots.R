@@ -42,25 +42,37 @@ ggsave(filename=paste0(ExportFo,"Stripes.png"), plot, device = "png", dpi = 90, 
 
 ################################################################################
 
-
 #weird 4 loop
+Svenja <- RingpSvenjaark[1:61680,]
+length(Svenja$DateTime) %%  10 == 0
 
-length(Data$Time) %% 5 == 0
+length(Svenja$DateTime)/10
 
-length(Data$Time)/50
-
-Data2 <- data.frame(Time=rep(NA,6116),Ts=NA,Gs=NA,Ns=NA,Hs=NA,Check=NA)
+Data2 <- data.frame(DateTime=rep(NA,6116),Ts=NA,Gs=NA,Ns=NA,Hs=NA)
 
 for(i in 1:6116){
   
   start <- (i*4)-4+i
   end <- (i*4)+i
   
-  Data2$Time[i] <- mean(Data$DateTime[(i*4)-4+i:(i*4)+i])
-  Data2$Ts[i] <- mean(Data$Ts[start:end], na.rm = TRUE)
-  Data2$Gs[i] <- mean(Data$Gs[(i*4)-4+i:(i*4)+i], na.rm = TRUE)
-  Data2$Ns[i] <- mean(Data$Ns[(i*4)-4+i:(i*4)+i], na.rm = TRUE)
-  Data2$Hs[i] <- mean(Data$Hs[(i*4)-4+i:(i*4)+i], na.rm = TRUE)
+  Data2$DateTime[i] <- mean(Svenja$DateTime[(i*4)-4+i:(i*4)+i])
+  Data2$Ts[i] <- mean(Svenja$Ts[start:end], na.rm = TRUE)
+  Data2$Gs[i] <- mean(Svenja$Gs[(i*4)-4+i:(i*4)+i], na.rm = TRUE)
+  Data2$Ns[i] <- mean(Svenja$Ns[(i*4)-4+i:(i*4)+i], na.rm = TRUE)
+  Data2$Hs[i] <- mean(Svenja$Hs[(i*4)-4+i:(i*4)+i], na.rm = TRUE)
   
 }
 
+
+Data2_f <- data.frame(DateTime=Data2[,1],Val_ID=NA,Val=NA)
+
+for(i in 1:length(Data2$DateTime)){
+  Data2_f$Val[i] <- max(Data2[i,c(-1,-2,-2)])
+  Data2_f$Val_ID[i] <- names(Data2[i,c(-1,-2,-2)])[which(Data2[i,c(-1,-2,-2)] == Data2_f$Val[i])]
+}
+################################################################################
+ggplot(Data2_f) +
+  geom_vline(mapping=aes(xintercept=DateTime,
+                         color=factor(Val_ID))) +
+  scale_color_manual(values = c('#9f7257ff','#e49e00ff','#376111ff','#9f2b00ff')) +
+  geom_point(aes(x=DateTime,y=Val), size=0.01, alpha=0.1) 
