@@ -17,25 +17,47 @@ ipak <- function(pkg){
 # Load libraries
 ipak(c("sp","sf","raster","tidyverse","rgdal","rayshader", "ggplot2","viridis",
        "ggdark","magrittr", "leaflet","SciViews","crayon","RColorBrewer",
-       "classInt","LandCoverEntropy"))
+       "classInt","LandCoverEntropy","ggplotgui"))
 ################################################################################
-Main_Fo <- "C://Users//Cowboybebop//Documents//EAGLE//0.Documents//RProjects//SoundScape//"
+Main_Fo <- "C:\\Users\\nilsk_tpyv1v5\\OneDrive\\Desktop\\SoundScape_Git\\SC\\SoundScape"
 ################################################################################
 # Load Data (GPKG)
 UrbAtl_Pol <- st_read( paste0(Main_Fo, "\\2.SampleData\\LandCover\\Wurzburg_UA_UC.gpkg"))
+WuLoc <- st_read( paste0(Main_Fo, "\\2.SampleData\\SoundSegmentation\\Coordiantes.gpkg"))
 
 # Calculate 
 EntropyWz <- Entropy(UrbAtl_Pol,"class_2018",500,"Hex",1)
 
 
 #########################################
-POINT <- st_as_sf(data.frame(lon = c(1,4,6), lat = c(0,0,-3)), coords = c('lon', 'lat'))
-buf.a <- st_buffer(a, 1)
-cIRCLEaREA <- st_intersection(UrbAtl_Pol, buf.a)
-cIRCLEaREA$area <- st_area(cIRCLEaREA)
+
+# accessing the location df
+POINT <- st_as_sf(data.frame(lon = WuLoc$geom[[2]][1], lat = WuLoc$geom[[2]][2]), coords = c('lon', 'lat'))
+
+#define a buffer area
+buf.a <- st_buffer(POINT, 50)
+
+
+st_crs(buf.a) <- st_crs(UrbAtl_Pol)
+
+CircleArea <- st_intersection(UrbAtl_Pol[,"class_2018"], buf.a)
+
+CircleArea$area <- st_area(CircleArea)
+
+plot(CircleArea)
+
+
+hist(CircleArea$area)
+
+
+# Basic piechart
+ggplot(CircleArea, aes(x="", y=class_2018, fill=class_2018)) +
+  geom_bar(stat="identity", width=1) +
+  coord_polar("y", start=0)
+
 #########################################
 
-
+WuLoc$geom[[1]][1]
 
 ################################################################################
 ggplot(EntropyWz) +
