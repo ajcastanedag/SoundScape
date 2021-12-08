@@ -95,6 +95,32 @@ getVote <- function(Data){
   return(Data2)
 }
 ################################################################################
+getVoteRaw <- function(Data){
+  
+  Data2 <- data.frame(DateTime=Data[,1],Val_ID=NA,Val=NA)
+  
+  lengthDf <- length(Data[,1])
+  pb <- txtProgressBar(min = 0, max = lengthDf, style = 3)
+  
+  for(i in 1:lengthDf){
+    Data2$Val[i] <- max(Data[i,c(-1,-2,-3)])
+    Data2$Val_ID[i] <- names(Data[i,c(-1,-2,-3)])[which(Data[i,c(-1,-2,-3)] == Data2$Val[i])]
+    setTxtProgressBar(pb, i)
+  }
+  close(pb)
+  return(Data2)
+}
+################################################################################
+CountClassPerc <- function(Data){
+  
+  Data <- Data %>%
+    group_by(Val_ID) %>%
+    summarise(P_V = round(n()*100/length(Data[,1]),2))
+  
+  return(Data)
+  
+}
+################################################################################
 single <- function(Data, Field){
   plot <- ggplot(Data, aes(x=DateTime, y=Data[,Field])) +
     scale_x_datetime(expand = c(0, 0)) +
