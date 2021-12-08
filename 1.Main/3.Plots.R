@@ -26,7 +26,7 @@ Svenja_V <- getVote(Svenja_R)
 plot <- ggplot(Svenja_V) +
   geom_point(aes(x=DateTime,y=Val), size=0.01, alpha=0.1) +
   geom_vline(mapping=aes(xintercept=DateTime,
-                         color=Color)) +
+                         color=as.factor(Val_ID))) +
   scale_x_datetime(expand = c(0, 0)) +
   scale_y_continuous(limits = c(0, 1),expand = c(0, 0)) +
   scale_color_manual(values = c('#722b00ff','#e49e00ff','#376111ff','#282828ff'))
