@@ -30,7 +30,7 @@ EntropyWz <- Entropy(UrbAtl_Pol,"class_2018",500,"Hex",1)
 
 #############################################################################################
 #buffer locations and get areas#
-h
+
 # accessing the location df
 POINT <- st_as_sf(data.frame(lon = WuLoc$geom[[2]][1], lat = WuLoc$geom[[2]][2]), coords = c('lon', 'lat'))
 
