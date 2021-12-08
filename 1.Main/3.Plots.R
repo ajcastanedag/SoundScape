@@ -1,6 +1,14 @@
 ################################################################################
+################################################################################
+################################################################################
+###
+### Plotting Interface of SoundScapeR
+###
+################################################################################
+################################################################################
+################################################################################
 # Structure
-MainFo <- "C:\\Users\\Cowboybebop\\Documents\\EAGLE\\0.Documents\\RProjects\\SoundScape"
+MainFo <- "C:\\Users\\nilsk\\Desktop\\Soundscape_Git\\SoundScape"
 ExportFo <- paste0(MainFo,"\\4.Results\\")
 
 # Load functions file
@@ -10,10 +18,14 @@ source(paste0(MainFo,"\\1.Main\\2.Functions.R"))
 Penny <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Penny.txt"))
 Svenja <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Svenja.txt"))
 Ringpark <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Ringpark.txt"))
+Sebastian <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Sebastian.txt"))
 ################################################################################
-# Using points and single field
+# Using points and single field > 0.5 (tryouts and explanations needed?) 
 Ringpark<-Ringpark[Ringpark$Ns>0.5,]
+
+#using single fields
 single(Ringpark,"Ns")
+
 # Using all fields
 patch(Ringpark)
 ################################################################################
@@ -21,8 +33,10 @@ patch(Ringpark)
 ras(Ringpark,"Ns","Spectral")
 ################################################################################
 
+#creating new summrizing DF
 Ringpark2 <- data.frame(DateTime=Ringpark[,1],Val_ID=NA,Val=NA)
 
+#loopinh through classification results returning the maxima of the classification values
 for(i in 1:length(Ringpark2$DateTime)){
   Ringpark2$Val[i] <- max(Ringpark[i,c(-1,-2,-2)])
   Ringpark2$Val_ID[i] <- names(Ringpark[i,c(-1,-2,-2)])[which(Ringpark[i,c(-1,-2,-2)] == Ringpark2$Val[i])]
