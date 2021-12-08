@@ -1,37 +1,24 @@
 ################################################################################
-################################################################################
-################################################################################
-###
-### Plotting Interface of SoundScapeR
-###
-################################################################################
-################################################################################
-################################################################################
 # Structure
-MainFo <- "C:\\Users\\nilsk\\Desktop\\Soundscape_Git\\SoundScape"
+MainFo <- "C:\\Users\\nilsk_tpyv1v5\\OneDrive\\Desktop\\SoundScape_Git\\SC\\SoundScape"
 ExportFo <- paste0(MainFo,"\\4.Results\\")
 
 # Load functions file
 source(paste0(MainFo,"\\1.Main\\2.Functions.R"))
-
 ################################################################################
 Penny <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Penny.txt"))
 Svenja <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Svenja.txt"))
 Ringpark <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Ringpark.txt"))
-Sebastian <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Sebastian.txt"))
 ################################################################################
-# Using points and single field > 0.5 (tryouts and explanations needed?) 
-Ringpark<-Ringpark[Ringpark$Ns>0.5,]
-
-#using single fields
-single(Ringpark,"Ns")
-
+# Using points and single field
+single(Svenja,"Ts")
 # Using all fields
 patch(Ringpark)
 ################################################################################
 # Using raster/tiles and single field
 ras(Ringpark,"Ns","Spectral")
 ################################################################################
+<<<<<<< HEAD
 
 #creating new summrizing DF
 Ringpark2 <- data.frame(DateTime=Ringpark[,1],Val_ID=NA,Val=NA)
@@ -55,39 +42,35 @@ plot
 ggsave(filename=paste0(ExportFo,"Stripes.png"), plot, device = "png", dpi = 90, width = 30,height = 3,units = "cm")
 
 
+=======
+# Make a summary of the data based on a window size (10 in this case), note that 
+# if length(Data) %% size != 0 it wont run so you can crop it manually by indexing
+Svenja_R <- reduce(Svenja[1:61160,],10)
+>>>>>>> 61cdff89ebf5eaae76e15569d4c28ca8009265b0
 ################################################################################
-
-#weird 4 loop
-Svenja <- RingpSvenjaark[1:61680,]
-length(Svenja$DateTime) %%  10 == 0
-
-length(Svenja$DateTime)/10
-
-Data2 <- data.frame(DateTime=rep(NA,6116),Ts=NA,Gs=NA,Ns=NA,Hs=NA)
-
-for(i in 1:6116){
-  
-  start <- (i*4)-4+i
-  end <- (i*4)+i
-  
-  Data2$DateTime[i] <- mean(Svenja$DateTime[(i*4)-4+i:(i*4)+i])
-  Data2$Ts[i] <- mean(Svenja$Ts[start:end], na.rm = TRUE)
-  Data2$Gs[i] <- mean(Svenja$Gs[(i*4)-4+i:(i*4)+i], na.rm = TRUE)
-  Data2$Ns[i] <- mean(Svenja$Ns[(i*4)-4+i:(i*4)+i], na.rm = TRUE)
-  Data2$Hs[i] <- mean(Svenja$Hs[(i*4)-4+i:(i*4)+i], na.rm = TRUE)
-  
-}
-
-
-Data2_f <- data.frame(DateTime=Data2[,1],Val_ID=NA,Val=NA)
-
-for(i in 1:length(Data2$DateTime)){
-  Data2_f$Val[i] <- max(Data2[i,c(-1,-2,-2)])
-  Data2_f$Val_ID[i] <- names(Data2[i,c(-1,-2,-2)])[which(Data2[i,c(-1,-2,-2)] == Data2_f$Val[i])]
-}
+# Function to get the high segmented sound per DateTime creating two fields, one 
+# with the highest value and the other one with the class that corresponds to that
+# value
+Svenja_V <- getVote(Svenja_R)
 ################################################################################
-ggplot(Data2_f) +
+# Make a data frame that counts the frequency of available classes and transform
+# it into %. The used data frame in this function is the summericed one, not the
+# raw one
+Svenja_FdF <- CountClassPerc(Svenja_V)
+################################################################################
+# Make a data frame that counts the frequency of available classes and transform
+# it into % using the raw data set to compare the impact of the summary methodology
+Svenja_FdF_Raw <- getVoteRaw(Svenja) %>% CountClassPerc()
+################################################################################
+# Plot that shit
+plot <- ggplot(Svenja_V) +
+  geom_point(aes(x=DateTime,y=Val), size=0.01, alpha=0.1) +
   geom_vline(mapping=aes(xintercept=DateTime,
-                         color=factor(Val_ID))) +
-  scale_color_manual(values = c('#9f7257ff','#e49e00ff','#376111ff','#9f2b00ff')) +
-  geom_point(aes(x=DateTime,y=Val), size=0.01, alpha=0.1) 
+                         color=as.factor(Val_ID))) +
+  scale_x_datetime(expand = c(0, 0)) +
+  scale_y_continuous(limits = c(0, 1),expand = c(0, 0)) +
+  scale_color_manual(values = c('#722b00ff','#e49e00ff','#376111ff','#282828ff'))
+   
+
+plot
+################################################################################
