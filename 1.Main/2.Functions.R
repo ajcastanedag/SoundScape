@@ -43,6 +43,58 @@ LoadFile <- function(path){
   
 }
 ################################################################################
+reduce <- function(Data, Size){
+  
+  if(length(Data[,1]) %%  Size == 0){
+    
+    lengthDf <- length(Data[,1])/Size
+    
+    Data2 <- data.frame(DateTime=rep(NA,lengthDf),
+                        Ts=rep(NA,lengthDf),
+                        Gs=rep(NA,lengthDf),
+                        Ns=rep(NA,lengthDf),
+                        Hs=rep(NA,lengthDf))
+    
+    pb <- txtProgressBar(min = 0, max = lengthDf, style = 3)
+
+    for(i in 1:lengthDf){
+
+      start <- (i*4)-4+i
+      end <- (i*4)+i
+
+      Data2$DateTime[i] <- mean(Data$DateTime[(i*4)-4+i:(i*4)+i]) 
+      Data2$Ts[i] <- mean(Data$Ts[start:end], na.rm = TRUE)
+      Data2$Gs[i] <- mean(Data$Gs[(i*4)-4+i:(i*4)+i], na.rm = TRUE)
+      Data2$Ns[i] <- mean(Data$Ns[(i*4)-4+i:(i*4)+i], na.rm = TRUE)
+      Data2$Hs[i] <- mean(Data$Hs[(i*4)-4+i:(i*4)+i], na.rm = TRUE)
+      setTxtProgressBar(pb, i)
+    }
+    
+    Data2$DateTime <- as.POSIXct(Data2$DateTime,origin = "1970-01-01")
+    
+    close(pb)
+    return(Data2)
+    
+  } else(print("Select another size"))
+    
+}
+################################################################################
+getVote <- function(Data){
+  
+  Data2 <- data.frame(DateTime=Data[,1],Val_ID=NA,Val=NA)
+  
+  lengthDf <- length(Data[,1])
+  pb <- txtProgressBar(min = 0, max = lengthDf, style = 3)
+
+  for(i in 1:lengthDf){
+    Data2$Val[i] <- max(Data[i,c(-1)])
+    Data2$Val_ID[i] <- names(Data[i,c(-1)])[which(Data[i,c(-1)] == Data2$Val[i])]
+    setTxtProgressBar(pb, i)
+  }
+  close(pb)
+  return(Data2)
+}
+################################################################################
 single <- function(Data, Field){
   plot <- ggplot(Data, aes(x=DateTime, y=Data[,Field])) +
     scale_x_datetime(expand = c(0, 0)) +
