@@ -42,15 +42,16 @@ for(i in 1:length(Ringpark2$DateTime)){
   Ringpark2$Val_ID[i] <- names(Ringpark[i,c(-1,-2,-2)])[which(Ringpark[i,c(-1,-2,-2)] == Ringpark2$Val[i])]
 }
 
-
+#plotting of the classification maximas
 plot <- ggplot(Ringpark2) +
   geom_vline(mapping=aes(xintercept=DateTime,
                          color=factor(Val_ID))) +
   scale_color_manual(values = c('#9f7257ff','#e49e00ff','#376111ff','#9f2b00ff')) +
-  geom_point(aes(x=DateTime,y=Val), size=0.01, alpha=0.1) 
+  geom_point(aes(x=DateTime,y=Val), size=0.05, alpha=0.1) 
 
 plot
 
+#saving png
 ggsave(filename=paste0(ExportFo,"Stripes.png"), plot, device = "png", dpi = 90, width = 30,height = 3,units = "cm")
 
 
