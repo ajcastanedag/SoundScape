@@ -35,7 +35,13 @@ cIRCLEaREA <- st_intersection(UrbAtl_Pol, buf.a)
 cIRCLEaREA$area <- st_area(cIRCLEaREA)
 #########################################
 
+TsList <-c("","","")
 
+if(cIRCLEaREA$class_2018 %in% TsList){
+  cIRCLEaREA$class_2018 = "Ts"
+} else if(cIRCLEaREA$class_2018 %in% HnList){
+  cIRCLEaREA$class_2018 = "Hs"
+}
 
 ################################################################################
 ggplot(EntropyWz) +
