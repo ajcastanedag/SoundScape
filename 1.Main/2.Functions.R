@@ -95,6 +95,16 @@ getVote <- function(Data){
   return(Data2)
 }
 ################################################################################
+CountClassPerc <- function(Data){
+  
+  Data <- Data %>%
+    group_by(Val_ID) %>%
+    summarise(P_V = round(n()*100/length(Data[,1]),2))
+  
+  return(Data)
+  
+}
+################################################################################
 single <- function(Data, Field){
   plot <- ggplot(Data, aes(x=DateTime, y=Data[,Field])) +
     scale_x_datetime(expand = c(0, 0)) +

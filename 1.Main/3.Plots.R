@@ -23,6 +23,11 @@ Svenja_R <- reduce(Svenja[1:61160,],10)
 ################################################################################
 Svenja_V <- getVote(Svenja_R)
 ################################################################################
+Svenja_FdF <- CountClassPerc(Svenja_V)
+
+ggplot(Svenja_V, aes(Val_ID)) +
+  geom_bar(fill = "#0073C2FF") 
+################################################################################
 plot <- ggplot(Svenja_V) +
   geom_point(aes(x=DateTime,y=Val), size=0.01, alpha=0.1) +
   geom_vline(mapping=aes(xintercept=DateTime,
