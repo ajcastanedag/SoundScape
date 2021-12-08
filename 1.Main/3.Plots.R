@@ -23,7 +23,7 @@ Svenja_R <- reduce(Svenja[1:61160,],10)
 ################################################################################
 Svenja_V <- getVote(Svenja_R)
 ################################################################################
-Svenja_FdF <- CountClassPerc(Svenja_V)
+Svenja_FdF <- CountClassPerc_V(Svenja_V)
 
 ggplot(Svenja_V, aes(Val_ID)) +
   geom_bar(fill = "#0073C2FF") 

@@ -95,7 +95,7 @@ getVote <- function(Data){
   return(Data2)
 }
 ################################################################################
-CountClassPerc <- function(Data){
+CountClassPerc_V <- function(Data){
   
   Data <- Data %>%
     group_by(Val_ID) %>%
