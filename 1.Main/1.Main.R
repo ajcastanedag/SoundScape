@@ -23,7 +23,7 @@ Main_Fo <- "C:\\Users\\nilsk_tpyv1v5\\OneDrive\\Desktop\\SoundScape_Git\\SC\\Sou
 ################################################################################
 # Load Data (GPKG)
 UrbAtl_Pol <- st_read( paste0(Main_Fo, "\\2.SampleData\\LandCover\\Wurzburg_UA_UC.gpkg"))
-WuLoc <- st_read( paste0(Main_Fo, "\\2.SampleData\\SoundSegmentation\\Coordiantes.gpkg"))
+WuLoc <- st_read( paste0(Main_Fo, "\\2.SampleData\\SoundSegmentation\\Coordinates.gpkg"))
 
 # Calculate 
 EntropyWz <- Entropy(UrbAtl_Pol,"class_2018",500,"Hex",1)

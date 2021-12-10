@@ -9,16 +9,16 @@ source(paste0(MainFo,"\\1.Main\\2.Functions.R"))
 Penny <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Penny.txt"))
 Svenja <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Svenja.txt"))
 Ringpark <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Ringpark.txt"))
+Loewenbruecke <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_LoewenB.txt"))
 ################################################################################
 # Using points and single field
-single(Svenja,"Ts")
+single(Loewenbruecke,"Ns")
 # Using all fields
-patch(Ringpark)
+patch(Loewenbruecke)
 ################################################################################
 # Using raster/tiles and single field
-ras(Ringpark,"Ns","Spectral")
+ras(Loewenbruecke,"Ns","Spectral")
 ################################################################################
-<<<<<<< HEAD
 
 #creating new summrizing DF
 Ringpark2 <- data.frame(DateTime=Ringpark[,1],Val_ID=NA,Val=NA)
@@ -39,14 +39,13 @@ plot <- ggplot(Ringpark2) +
 plot
 
 #saving png
-ggsave(filename=paste0(ExportFo,"Stripes.png"), plot, device = "png", dpi = 90, width = 30,height = 3,units = "cm")
+ggsave(filename=paste0(ExportFo,"Stripes_Ringpark.png"), plot, device = "png", dpi = 90, width = 30,height = 3,units = "cm")
 
 
-=======
 # Make a summary of the data based on a window size (10 in this case), note that 
 # if length(Data) %% size != 0 it wont run so you can crop it manually by indexing
 Svenja_R <- reduce(Svenja[1:61160,],10)
->>>>>>> 61cdff89ebf5eaae76e15569d4c28ca8009265b0
+
 ################################################################################
 # Function to get the high segmented sound per DateTime creating two fields, one 
 # with the highest value and the other one with the class that corresponds to that
