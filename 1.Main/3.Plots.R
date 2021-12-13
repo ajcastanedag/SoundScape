@@ -1,6 +1,6 @@
 ################################################################################
 # Structure
-MainFo <- "C:\\Users\\nilsk_tpyv1v5\\OneDrive\\Desktop\\SoundScape_Git\\SC\\SoundScape"
+MainFo <- "C:\\Users\\nilsk\\Desktop\\Soundscape_Git\\SoundScape"
 ExportFo <- paste0(MainFo,"\\4.Results\\")
 
 # Load functions file
@@ -10,14 +10,17 @@ Penny <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Penny.t
 Svenja <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Svenja.txt"))
 Ringpark <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Ringpark.txt"))
 Loewenbruecke <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_LoewenB.txt"))
+Jenseits <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Jenseits.txt"))
+Markt <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Markt.txt"))
+Nicola_Park <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Nicola.txt"))
 ################################################################################
 # Using points and single field
-single(Loewenbruecke,"Ns")
+single(Penny[Penny$Ts>0.4,],"Ts")#Ts,Ns,Gs,Hs
 # Using all fields
-patch(Loewenbruecke)
+patch(Penny)
 ################################################################################
 # Using raster/tiles and single field
-ras(Loewenbruecke,"Ns","Spectral")
+ras(Nicola_Park[Nicola_Park$Ts>0.6,],"Ts","Spectral")
 ################################################################################
 
 #creating new summrizing DF
