@@ -1,2 +1,0 @@
-Name	lat	lon
-DATA_Penny.txt	??	??
