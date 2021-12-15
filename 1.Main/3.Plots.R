@@ -13,14 +13,16 @@ Loewenbruecke <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA
 Jenseits <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Jenseits.txt"))
 Markt <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Markt.txt"))
 Nicola_Park <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Nicola.txt"))
+Ringpark_See <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Ringpark_See.txt"))
+Main_Kuh <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Main_Kuh.txt"))
 ################################################################################
 # Using points and single field
-single(Penny[Penny$Ts>0.4,],"Ts")#Ts,Ns,Gs,Hs
+single(Main_Kuh[Main_Kuh$Ts>0.4,],"Ts")#Ts,Ns,Gs,Hs
 # Using all fields
-patch(Penny)
+patch(Main_Kuh)
 ################################################################################
 # Using raster/tiles and single field
-ras(Nicola_Park[Nicola_Park$Ts>0.6,],"Ts","Spectral")
+ras(Penny[Penny$Gs>0.4,],"Gs","Spectral")
 ################################################################################
 
 #creating new summrizing DF
@@ -37,7 +39,9 @@ plot <- ggplot(Ringpark2) +
   geom_vline(mapping=aes(xintercept=DateTime,
                          color=factor(Val_ID))) +
   scale_color_manual(values = c('#9f7257ff','#e49e00ff','#376111ff','#9f2b00ff')) +
-  geom_point(aes(x=DateTime,y=Val), size=0.05, alpha=0.1) 
+  geom_point(aes(x=DateTime,y=Val), size=0.05, alpha=0.1)+
+  guides(colour = guide_legend(override.aes = list(size=3,linetype= 1)))+
+  theme_minimal()
 
 plot
 
