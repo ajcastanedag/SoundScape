@@ -124,7 +124,7 @@ CountClassPerc <- function(Data){
 single <- function(Data, Field){
   plot <- ggplot(Data, aes(x=DateTime, y=Data[,Field])) +
     scale_x_datetime(expand = c(0, 0),date_breaks = "2 hour",
-                     date_labels = "%I:%M %p") +
+                     date_labels = "%H:%M %p") +
     scale_y_continuous(limits = c(0.4, 1),expand = c(0, 0)) +
     geom_density_2d_filled(alpha = 0.8) +
     geom_point(size=0.01, alpha=0.5, color="black") +
