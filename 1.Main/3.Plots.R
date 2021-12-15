@@ -55,35 +55,39 @@ ggsave(filename=paste0(ExportFo,"Stripes_Penny.png"), plot, device = "png", dpi 
 
 # Make a summary of the data based on a window size (10 in this case), note that 
 # if length(Data) %% size != 0 it wont run so you can crop it manually by indexing
-Svenja_R <- reduce(Svenja[1:61160,],10)
+Ringpark_See_R <- reduce(Ringpark_See[1:61160,],10)
 
 ################################################################################
 # Function to get the high segmented sound per DateTime creating two fields, one 
 # with the highest value and the other one with the class that corresponds to that
 # value
-Svenja_V <- getVote(Svenja_R)
+Ringpark_See_V <- getVote(Ringpark_See_R)
 ################################################################################
 # Make a data frame that counts the frequency of available classes and transform
 # it into %. The used data frame in this function is the summericed one, not the
 # raw one
-Svenja_FdF <- CountClassPerc(Svenja_V)
+Ringpark_See_FdF <- CountClassPerc(Ringpark_See_V)
 ################################################################################
 # Make a data frame that counts the frequency of available classes and transform
 # it into % using the raw data set to compare the impact of the summary methodology
-Svenja_FdF_Raw <- getVoteRaw(Svenja) %>% CountClassPerc()
+Ringpark_See_FdF_Raw <- getVoteRaw(Ringpark_See) %>% CountClassPerc()
 ################################################################################
 # Plot that shit
-plot2 <- ggplot(Svenja_V) +
+plot2 <- ggplot(Ringpark_See_V) +
   geom_point(aes(x=DateTime,y=Val), size=0.01, alpha=0.1) +
   geom_vline(mapping=aes(xintercept=DateTime,
                          color=as.factor(Val_ID))) +
   scale_x_datetime(expand = c(0, 0)) +
   scale_y_continuous(limits = c(0, 1),expand = c(0, 0)) +
-  scale_color_manual(values = c('#722b00ff','#e49e00ff','#376111ff','#282828ff'))
+  guides(colour = guide_legend(override.aes = list(size=3,linetype= 1), title = "Classification max"))+
+  labs(x = "Time", y = "Classification intensity")+
+  scale_color_manual(values = c("Gs"= '#722b00ff',"Hs"='#e49e00ff',"Ns"='#376111ff',"Ts"='#9f7257ff'))+
+  theme_gray()#722b00ff, e49e00ff+
+
    
 
 plot2
 
 #saving png
-ggsave(filename=paste0(ExportFo,"Stripes_Ringpark_See.png"), plot2, device = "png", dpi = 90, width = 30,height = 20,units = "cm")
+ggsave(filename=paste0(ExportFo,"Stripes_windowed_Ringpark_See.png"), plot2, device = "png", dpi = 90, width = 30,height = 20,units = "cm")
 ################################################################################
