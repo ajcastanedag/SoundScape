@@ -26,27 +26,31 @@ ras(Penny[Penny$Gs>0.4,],"Gs","Spectral")
 ################################################################################
 
 #creating new summrizing DF
-Ringpark2 <- data.frame(DateTime=Ringpark[,1],Val_ID=NA,Val=NA)
+Penny2 <- data.frame(DateTime=Penny[,1],Val_ID=NA,Val=NA)
 
 #loopinh through classification results returning the maxima of the classification values
-for(i in 1:length(Ringpark2$DateTime)){
-  Ringpark2$Val[i] <- max(Ringpark[i,c(-1,-2,-2)])
-  Ringpark2$Val_ID[i] <- names(Ringpark[i,c(-1,-2,-2)])[which(Ringpark[i,c(-1,-2,-2)] == Ringpark2$Val[i])]
+for(i in 1:length(Penny2$DateTime)){
+  Penny2$Val[i] <- max(Penny[i,c(-1,-2,-2)])
+  Penny2$Val_ID[i] <- names(Penny[i,c(-1,-2,-2)])[which(Penny[i,c(-1,-2,-2)] == Penny2$Val[i])]
 }
 
 #plotting of the classification maximas
-plot <- ggplot(Ringpark2) +
+plot <- ggplot(Penny2) +
   geom_vline(mapping=aes(xintercept=DateTime,
                          color=factor(Val_ID))) +
   scale_color_manual(values = c('#9f7257ff','#e49e00ff','#376111ff','#9f2b00ff')) +
+  scale_x_datetime(expand = c(0, 0),date_breaks = "2 hour",
+                   date_labels = "%H:%M %p") +
   geom_point(aes(x=DateTime,y=Val), size=0.05, alpha=0.1)+
-  guides(colour = guide_legend(override.aes = list(size=3,linetype= 1)))+
-  theme_minimal()
+  guides(colour = guide_legend(override.aes = list(size=3,linetype= 1), title = "Classification max"))+
+  labs(x = "Time", y = "Classification intensity")+
+  theme_grey()
 
 plot
 
+
 #saving png
-ggsave(filename=paste0(ExportFo,"Stripes_Ringpark.png"), plot, device = "png", dpi = 90, width = 30,height = 3,units = "cm")
+ggsave(filename=paste0(ExportFo,"Stripes_Penny.png"), plot, device = "png", dpi = 90, width = 30,height = 20,units = "cm")
 
 
 # Make a summary of the data based on a window size (10 in this case), note that 
@@ -69,7 +73,7 @@ Svenja_FdF <- CountClassPerc(Svenja_V)
 Svenja_FdF_Raw <- getVoteRaw(Svenja) %>% CountClassPerc()
 ################################################################################
 # Plot that shit
-plot <- ggplot(Svenja_V) +
+plot2 <- ggplot(Svenja_V) +
   geom_point(aes(x=DateTime,y=Val), size=0.01, alpha=0.1) +
   geom_vline(mapping=aes(xintercept=DateTime,
                          color=as.factor(Val_ID))) +
@@ -78,5 +82,8 @@ plot <- ggplot(Svenja_V) +
   scale_color_manual(values = c('#722b00ff','#e49e00ff','#376111ff','#282828ff'))
    
 
-plot
+plot2
+
+#saving png
+ggsave(filename=paste0(ExportFo,"Stripes_Ringpark_See.png"), plot2, device = "png", dpi = 90, width = 30,height = 20,units = "cm")
 ################################################################################
