@@ -17,7 +17,7 @@ install.packages("fmsb")
 
 library(fmsb)
 
-Marktplatz1 <- Marktplatz[,4:7]
+Marktplatz1 <- Markt[,4:7]
 
 Marktplatz2 <- rbind(rep(1,1) , rep(0,1) , Marktplatz1)
 
@@ -45,12 +45,13 @@ library(dplyr)
 library(ggplot2)
 library(stringr)
 
+
 single1 <- function(Data, Field){
   plot <- ggplot(Data, aes(x=DateTime, y=Data[,Field])) +
     scale_x_datetime(expand = c(0, 0)) +
-    scale_y_continuous(limits = c(0, 1),expand = c(0, 0)) +
+    scale_y_continuous(limits = c(0.4, 1),expand = c(0, 0)) +
     geom_density_2d_filled(alpha = 0.8) +
-    geom_point(size=0.01, alpha=0.5, color="gray12") +
+    geom_point(size=0.01, alpha=0.5, color="black") +
     labs(x = "Time", y = "Classification intensity")+
     theme(legend.position='none') +
     ylab(Field)
@@ -58,8 +59,8 @@ single1 <- function(Data, Field){
   return(plot)
   
 }
+single1(Nicola_Park,"Gs")
 
-single1(Svenja,"Ts")
 ### streifen plot tryouts
 plot1 <- ggplot(Svenja_V) +
   geom_point(aes(x=DateTime,y=Val), size=0.5, alpha=0.5) +
