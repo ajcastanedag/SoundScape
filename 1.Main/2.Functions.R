@@ -24,10 +24,10 @@ LoadFile <- function(path){
   Data <- Data[,c(-2,-4,-6,-8)]
   
   # Rename fields
-  names(Data) <- c("Time","Date","Temp","Hum","Ts","Gs","Ns","Hs")
+  names(Data) <- c("Time","Date","Temp","Hum","Ts","Gs","Bs","Hs")
   
   # process string
-  Data[c("Ts","Gs","Ns","Hs")] <- lapply(Data[c("Ts","Gs","Ns","Hs")],
+  Data[c("Ts","Gs","Bs","Hs")] <- lapply(Data[c("Ts","Gs","Bs","Hs")],
                                          function(x) as.numeric(gsub("[^0-9.]",
                                                                      "",
                                                                      x)))
@@ -140,7 +140,7 @@ patch <- function(Data){
   
   P1 <- single(Data,"Ts")
   P2 <- single(Data,"Hs")
-  P3 <- single(Data,"Ns")
+  P3 <- single(Data,"Bs")
   P4 <- single(Data,"Gs")
   
   return((P1 + P2 + P3 + P4))
