@@ -52,7 +52,7 @@ reduce <- function(Data, Size){
     Data2 <- data.frame(DateTime=rep(NA,lengthDf),
                         Ts=rep(NA,lengthDf),
                         Gs=rep(NA,lengthDf),
-                        Ns=rep(NA,lengthDf),
+                        Bs=rep(NA,lengthDf),
                         Hs=rep(NA,lengthDf))
     
     pb <- txtProgressBar(min = 0, max = lengthDf, style = 3)
@@ -65,7 +65,7 @@ reduce <- function(Data, Size){
       Data2$DateTime[i] <- mean(Data$DateTime[(i*4)-4+i:(i*4)+i]) 
       Data2$Ts[i] <- mean(Data$Ts[start:end], na.rm = TRUE)
       Data2$Gs[i] <- mean(Data$Gs[(i*4)-4+i:(i*4)+i], na.rm = TRUE)
-      Data2$Ns[i] <- mean(Data$Ns[(i*4)-4+i:(i*4)+i], na.rm = TRUE)
+      Data2$Bs[i] <- mean(Data$Bs[(i*4)-4+i:(i*4)+i], na.rm = TRUE)
       Data2$Hs[i] <- mean(Data$Hs[(i*4)-4+i:(i*4)+i], na.rm = TRUE)
       setTxtProgressBar(pb, i)
     }
