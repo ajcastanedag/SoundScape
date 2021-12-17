@@ -92,3 +92,17 @@ plot2
 #saving png
 ggsave(filename=paste0(ExportFo,"Stripes_windowed_Ringpark_See.png"), plot2, device = "png", dpi = 90, width = 30,height = 20,units = "cm")
 ################################################################################
+
+library(tidyr)
+# Filter only data (no T or H)
+Svenja <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Svenja.txt"))
+Svenja <- Svenja[1:1000,c(-2,-3)]
+SvenjaF <- gather(Svenja, "Class", "Value", 2:5)
+
+SvenjaF <-  SvenjaF[SvenjaF$Value < 0.6,]
+
+# stacked area chart
+ggplot(SvenjaF, aes(x=DateTime, y=Value, fill=Class)) + 
+  geom_area()
+
+
