@@ -19,6 +19,7 @@ ipak(c("sp","sf","raster","tidyverse","rgdal","rayshader", "ggplot2","viridis",
        "ggdark","magrittr", "leaflet","SciViews","crayon","RColorBrewer",
        "classInt","LandCoverEntropy","ggplotgui","ggpubr","ggthemes","ggridges"))
 ################################################################################
+Main_Fo <- "C:\\Users\\COWBOYBEBOP\\Desktop\\SoundScape"
 Main_Fo <- "C:\\Users\\nilsk_tpyv1v5\\OneDrive\\Desktop\\Soundsc_Git\\SoundScape"
 ################################################################################
 # Load Data (GPKG)
@@ -26,8 +27,9 @@ UrbAtl_Pol <- st_read( paste0(Main_Fo, "\\2.SampleData\\LandCover\\Wurzburg_UA_U
 WuLoc <- st_read( paste0(Main_Fo, "\\2.SampleData\\SoundSegmentation\\Coordinates.gpkg"))
 
 # Calculate 
-EntropyWz <- Entropy(UrbAtl_Pol,"class_2018",500,"Hex",1)
-
+library(LandCoverEntropy)
+EntropyWz <- Entropy(UrbAtl_Pol,"class_2018",250,"Hex",2)
+plot(EntropyWz[,c("class_2018","MFE")])
 #############################################################################################
 #buffer locations and get areas#
 
@@ -116,12 +118,12 @@ Natural <- c( "Land without current use","Mineral extraction and dump sites","Co
 
 ################################################################################
 ggplot(EntropyWz) +
-  geom_sf(aes(fill = k)) +
+  geom_sf(aes(fill = MFE)) +
   scale_fill_viridis("Entropy",
-                     limits=c(min(unique(EntropyWz$ClasNum)),
-                              max(unique(EntropyWz$ClasNum))),
-                     breaks = seq(min(unique(EntropyWz$ClasNum)),
-                                  max(unique(EntropyWz$ClasNum)),1)) +
+                     limits=c(min(unique(EntropyWz$MFE)),
+                              max(unique(EntropyWz$MFE))),
+                     breaks = seq(min(unique(EntropyWz$MFE)),
+                                  max(unique(EntropyWz$MFE)),1)) +
   ggtitle("Entropy map Würzburg") +
   theme_bw()
 ###############################################################################

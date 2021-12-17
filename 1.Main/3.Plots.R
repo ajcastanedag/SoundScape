@@ -96,13 +96,16 @@ ggsave(filename=paste0(ExportFo,"Stripes_windowed_Ringpark_See.png"), plot2, dev
 library(tidyr)
 # Filter only data (no T or H)
 Svenja <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Svenja.txt"))
-Svenja <- Svenja[1:1000,c(-2,-3)]
-SvenjaF <- gather(Svenja, "Class", "Value", 2:5)
+Svenja$Sum <- Svenja$Ts + Svenja$Gs + Svenja$Bs + Svenja$Hs 
 
-SvenjaF <-  SvenjaF[SvenjaF$Value < 0.6,]
+Svenja2 <- reduce(Svenja[,c(-2,-3)],2)
+Svenja2$Sum <- Svenja2$Ts + Svenja2$Gs + Svenja2$Bs + Svenja2$Hs 
+
+SvenjaF <- gather(Svenja, "Class", "Value", 2:5)
 
 # stacked area chart
 ggplot(SvenjaF, aes(x=DateTime, y=Value, fill=Class)) + 
-  geom_area()
+  geom_area() +
+  scale_y_continuous(limits = c(0, 1),expand = c(0, 0)) 
 
 
