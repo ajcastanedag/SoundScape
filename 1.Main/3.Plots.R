@@ -1,6 +1,7 @@
 ################################################################################
 # Structure
 MainFo <- "C:\\Users\\nilsk\\Desktop\\Soundscape_Git\\SoundScape"
+MainFo <- "C:\\Users\\COWBOYBEBOP\\Desktop\\SoundScape"
 ExportFo <- paste0(MainFo,"\\4.Results\\")
 
 # Load functions file
