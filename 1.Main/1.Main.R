@@ -17,7 +17,7 @@ ipak <- function(pkg){
 # Load libraries
 ipak(c("sp","sf","raster","tidyverse","rgdal","rayshader", "ggplot2","viridis",
        "ggdark","magrittr", "leaflet","SciViews","crayon","RColorBrewer",
-       "classInt","LandCoverEntropy","ggplotgui","ggpubr","ggthemes","ggridges"))
+       "classInt","LandCoverEntropy","ggplotgui","ggpubr","ggthemes","ggridges", "ggpomological"))
 ################################################################################
 Main_Fo <- "C:\\Users\\nilsk_tpyv1v5\\OneDrive\\Desktop\\Soundsc_Git\\SoundScape"
 ################################################################################
@@ -46,7 +46,8 @@ CircleArea <- st_intersection(UrbAtl_Pol[,"SumClass"], buf.a)
 #calculate areas
 CircleArea$area <- st_area(CircleArea)
 
-#plot dat shit
+#pot areas
+plot(CircleArea)
 
 #histogram
 pl_1 <- ggplot(aes(x=SumClass,y=as.numeric(area), fill= SumClass), data=CircleArea)+
@@ -125,3 +126,29 @@ ggplot(EntropyWz) +
   ggtitle("Entropy map Würzburg") +
   theme_bw()
 ###############################################################################
+#spatial plots
+
+
+
+P1 <- ggplot(CircleArea) +
+      geom_sf(aes(fill = SumClass))+
+      theme_pomological_fancy()
+
+#histogram
+P2 <- ggplot(aes(x=SumClass,y=as.numeric(area), fill= SumClass), data=CircleArea)+
+  geom_col() +
+  guides(fill="none")+
+  labs(x = "Urban Atlas class", y = "Area in km2")+
+  scale_fill_viridis_d()+
+  theme_pomological_fancy()
+
+#histogram
+P3 <- ggplot(aes(x=Val_ID,y=as.numeric(P_V), fill= Val_ID), data=Ringpark_FdF_Raw)+
+  geom_col() +
+  guides(fill="none")+
+  labs(x = "Sound class", y = "Classification Results")+
+  scale_fill_viridis_d()+
+  theme_pomological_fancy()
+
+P1 + P2 + P3
+
