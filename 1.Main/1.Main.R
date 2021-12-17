@@ -19,7 +19,7 @@ ipak(c("sp","sf","raster","tidyverse","rgdal","rayshader", "ggplot2","viridis",
        "ggdark","magrittr", "leaflet","SciViews","crayon","RColorBrewer",
        "classInt","LandCoverEntropy","ggplotgui","ggpubr","ggthemes","ggridges"))
 ################################################################################
-Main_Fo <- "C:\\Users\\nilsk\\Desktop\\Soundscape_Git\\SoundScape"
+Main_Fo <- "C:\\Users\\nilsk_tpyv1v5\\OneDrive\\Desktop\\Soundsc_Git\\SoundScape"
 ################################################################################
 # Load Data (GPKG)
 UrbAtl_Pol <- st_read( paste0(Main_Fo, "\\2.SampleData\\LandCover\\Wurzburg_UA_UC.gpkg"))
@@ -32,7 +32,7 @@ EntropyWz <- Entropy(UrbAtl_Pol,"class_2018",500,"Hex",1)
 #buffer locations and get areas#
 
 # accessing the location df
-POINT <- st_as_sf(data.frame(lon = WuLoc$geom[[3]][1], lat = WuLoc$geom[[3]][2]), coords = c('lon', 'lat'))
+POINT <- st_as_sf(data.frame(lon = WuLoc$geom[[1]][1], lat = WuLoc$geom[[1]][2]), coords = c('lon', 'lat'))
 
 #define a buffer area
 buf.a <- st_buffer(POINT, 50)
@@ -41,25 +41,25 @@ buf.a <- st_buffer(POINT, 50)
 st_crs(buf.a) <- st_crs(UrbAtl_Pol)
 
 #intersect with UA classes
-CircleArea <- st_intersection(UrbAtl_Pol[,"class_2018"], buf.a)
+CircleArea <- st_intersection(UrbAtl_Pol[,"SumClass"], buf.a)
 
 #calculate areas
 CircleArea$area <- st_area(CircleArea)
 
 #plot dat shit
-plot(CircleArea$area)
 
 #histogram
-pl_1 <- ggplot(aes(x=class_2018,y=as.numeric(area), fill=class_2018), data=CircleArea)+
+pl_1 <- ggplot(aes(x=SumClass,y=as.numeric(area), fill= SumClass), data=CircleArea)+
   geom_col() +
   guides(fill="none")+
-  labs(x = "UA Class", y = "Area in km2")+
-  scale_fill_viridis_d()
+  labs(x = "Urban Atlas class", y = "Area in km2")+
+  scale_fill_viridis_d()+
+  theme_gray()
 
 pl_1
 
 # Basic piechart
-ggplot(CircleArea, aes(x="", y=as.numeric(area), fill=class_2018)) +
+ggplot(CircleArea, aes(x="", y=as.numeric(area), fill=SumClass)) +
   geom_bar(stat="identity", width=1) +
   labs(x = "UA Class", y = "Area in km2")+
   coord_polar("y", start=0)
@@ -77,15 +77,15 @@ for(i in 1:length(UrbAtl_Pol$SumClass)){
                                      "Discontinuous medium density urban fabric (S.L. : 30% - 50%)",
                                      "Discontinuous low density urban fabric (S.L. : 10% - 30%)",
                                      "Discontinuous very low density urban fabric (S.L. : < 10%)",
-                                     "Industrial,commercial, public, military and private units",
-                                     "Industrial")){
+                                     "Industrial, commercial, public, military and private units"
+                                     )){
     UrbAtl_Pol$SumClass[i] <- 'Residential'
   } else if(UrbAtl_Pol$class_2018[i] %in% c("Railways and associated land","Fast transit roads and associated land",
                                             "Other roads and associated land","Port areas","Airports")){
     UrbAtl_Pol$SumClass[i] <- 'Traffic_Infrastructures'
   } else if(UrbAtl_Pol$class_2018[i] %in% c( "Land without current use","Mineral extraction and dump sites","Construction sites", 
                                              "Water", "Arable land (annual crops)", "Pastures","Isolated structures","Green urban areas",
-                                             "Sports and leisure facilities", "Forests", "Herbaceous vegetation associations (natural grassland, moors...)")){
+                                             "Sports and leisure facilities", "Forests","Permanent crops (vineyards, fruit trees, olive groves)", "Herbaceous vegetation associations (natural grassland, moors...)")){
     UrbAtl_Pol$SumClass[i] <- 'Natural'
   
 }
