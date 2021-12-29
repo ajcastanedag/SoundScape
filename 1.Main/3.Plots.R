@@ -16,6 +16,8 @@ Markt <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Markt.t
 Nicola_Park <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Nicola.txt"))
 Ringpark_See <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Ringpark_See.txt"))
 Main_Kuh <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Main_Kuh.txt"))
+TestData01A <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Test01SA.TXT"))
+TestData01B <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Test01SB.TXT"))
 ################################################################################
 # Using points and single field
 single(Main_Kuh[Main_Kuh$Ts>0.4,],"Ts")#Ts,Ns,Gs,Hs
