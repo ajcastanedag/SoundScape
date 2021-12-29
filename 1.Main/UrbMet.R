@@ -1,19 +1,22 @@
 ####################################################################################################################################################################
 ################################################################# Urban metrics ####################################################################################
 ####################################################################################################################################################################
-library(tidyverse)
-library(osmdata)
-library(r5r)
-library(geobr)
-library(sf)
-library(ggplot2)
-library(here)
-library(osmextract)
-library(data.table)
-library(magrittr)
-library(dplyr)
-library(tmap)
 
+ipak <- function(pkg){
+  
+  new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+  
+  if (length(new.pkg)) 
+    
+    install.packages(new.pkg, dependencies = TRUE)
+  
+  sapply(pkg, require, character.only = TRUE)
+  
+}
+# Load libraries
+ipak(c("sp","sf","raster","tidyverse","rgdal", "ggplot2","viridis",
+       "ggdark","magrittr", "leaflet","RColorBrewer","osmdata","r5r","geobr","here","osmextract",
+       "classInt","LandCoverEntropy","ggplotgui","ggpubr","ggthemes","ggridges", "ggpomological", "data.table", "dplyr", "tmap"))
 
 ###################################################### building density metric ########################################################################################
 
