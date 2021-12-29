@@ -2,4 +2,4 @@
 # SoundScape
 
 
-![](https://github.com/ajcastanedag/SoundScape/blob/main/Images/Spectrogram.PNG)           ![](https://github.com/ajcastanedag/SoundScape/blob/main/Images/Spectrogram.PNG) 
+![](https://github.com/ajcastanedag/SoundScape/blob/main/Images/Spectrogram.PNG)           
