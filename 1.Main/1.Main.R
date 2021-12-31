@@ -20,7 +20,7 @@ ipak(c("sp","sf","raster","tidyverse","rgdal","rayshader", "ggplot2","viridis",
        "classInt","LandCoverEntropy","ggplotgui","ggpubr","ggthemes","ggridges", "ggpomological"))
 ################################################################################
 Main_Fo <- "C:\\Users\\COWBOYBEBOP\\Desktop\\SoundScape"
-Main_Fo <- "C:\\Users\\nilsk_tpyv1v5\\OneDrive\\Desktop\\Soundsc_Git\\SoundScape"
+Main_Fo <- "C:\\Users\\nilsk\\Desktop\\Soundscape_Git\\SoundScape"
 ################################################################################
 # Load Data (GPKG)
 UrbAtl_Pol <- st_read( paste0(Main_Fo, "\\2.SampleData\\LandCover\\Wurzburg_UA_UC.gpkg"))
@@ -118,6 +118,30 @@ Natural <- c( "Land without current use","Mineral extraction and dump sites","Co
 
 
 ################################################################################
+################################ Entropy Plot ##################################
+################################################################################
+#set theme
+t<-theme_void()+
+  theme(
+    text=element_text(family = "Playfair Display"),
+    plot.margin = unit(c(1,1,1,1), "cm"),
+    plot.title = element_text(face = "bold", size = 16, hjust = 0.5, color = "#222222"),
+    plot.subtitle = element_text(hjust = 0.5, color = "#7A7A7A", size = 6),
+   # plot.background = element_rect(fill = "#f9f9f9", color = "#f9f9f9"),
+    panel.grid.major = element_line(color = "#f9f9f9"),
+    panel.grid.minor = element_blank(),
+    legend.title = element_text(face = "bold"),
+    legend.text = element_text(color = "#7A7A7A"),
+    legend.direction = "horizontal",
+    legend.position="bottom",
+    legend.key.width = unit(1, "cm"),
+    legend.key.height = unit(0.3, "cm"),
+    legend.box = "vertical"
+  )  
+theme_set(t)
+
+
+#plot
 ggplot(EntropyWz) +
   geom_sf(aes(fill = MFE)) +
   scale_fill_viridis("Entropy",
@@ -125,8 +149,11 @@ ggplot(EntropyWz) +
                               max(unique(EntropyWz$MFE))),
                      breaks = seq(min(unique(EntropyWz$MFE)),
                                   max(unique(EntropyWz$MFE)),1)) +
-  ggtitle("Entropy map Würzburg") +
-  theme_bw()
+  labs(title = "Entropy map Würzburg",
+       subtitle = "Based on Urban Atlas data",
+       fill = "Entropy")+ 
+  guides(fill = guide_colourbar(title.position="top", title.hjust = 0.5))+
+  theme_set(t)
 ###############################################################################
 #spatial plots
 
