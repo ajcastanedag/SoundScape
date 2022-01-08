@@ -20,21 +20,22 @@ TestData01A <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_T
 TestData01B <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Test01SB.TXT"))
 ################################################################################
 # Using points and single field
-single(Main_Kuh[Main_Kuh$Ts>0.4,],"Ts")#Ts,Ns,Gs,Hs
+single(TestData01A[TestData01A$Gs>0.4,],"Ts")#Ts,Ns,Gs,Hs
+
 # Using all fields
-patch(Main_Kuh)
+patch(TestData01A)
 ################################################################################
 # Using raster/tiles and single field
 ras(Penny[Penny$Gs>0.4,],"Gs","Spectral")
 ################################################################################
 
 #creating new summrizing DF
-Penny2 <- data.frame(DateTime=Penny[,1],Val_ID=NA,Val=NA)
+Penny2 <- data.frame(DateTime=TestData01B[,1],Val_ID=NA,Val=NA)
 
 #loopinh through classification results returning the maxima of the classification values
 for(i in 1:length(Penny2$DateTime)){
-  Penny2$Val[i] <- max(Penny[i,c(-1,-2,-2)])
-  Penny2$Val_ID[i] <- names(Penny[i,c(-1,-2,-2)])[which(Penny[i,c(-1,-2,-2)] == Penny2$Val[i])]
+  Penny2$Val[i] <- max(TestData01B[i,c(-1,-2,-2)])
+  Penny2$Val_ID[i] <- names(TestData01B[i,c(-1,-2,-2)])[which(TestData01B[i,c(-1,-2,-2)] == Penny2$Val[i])]
 }
 
 #plotting of the classification maximas
@@ -53,7 +54,7 @@ plot
 
 
 #saving png
-ggsave(filename=paste0(ExportFo,"Stripes_Penny.png"), plot, device = "png", dpi = 90, width = 30,height = 20,units = "cm")
+ggsave(filename=paste0(ExportFo,"Stripes_TestB.png"), plot, device = "png", dpi = 90, width = 30,height = 20,units = "cm")
 
 
 # Make a summary of the data based on a window size (10 in this case), note that 
