@@ -15,7 +15,7 @@ ipak <- function(pkg){
   
 }
 # Load libraries
-ipak(c("sp","sf","skimr","raster","fasterize","landscapemetrics","purr","landscapetools","mmand","tidyverse","rgdal", "ggplot2","viridis",
+ipak(c("sp","sf","skimr","raster","fasterize","landscapemetrics","corrr","purr","landscapetools","mmand","tidyverse","rgdal", "ggplot2","viridis",
        "ggdark","magrittr", "leaflet","RColorBrewer","osmdata","r5r","geobr","here","osmextract",
        "classInt","LandCoverEntropy","ggplotgui","ggpubr","ggthemes","ggridges", "ggpomological", "data.table", "dplyr", "tmap","stars", "rasterVis"))
 
@@ -27,7 +27,6 @@ ExportFo <- paste0(Main_Fo,"\\4.Results\\")
 
 # Load Data (GPKG)
 UrbAtl_Pol <- st_read( paste0(Main_Fo, "\\2.SampleData\\LandCover\\Wurzburg_UA_UC.gpkg"))
-
 
 # Add numeric class to Urban atlas
 Classes <- sort(unique(UrbAtl_Pol$code_2018))
@@ -50,6 +49,7 @@ UA_Raster <- fasterize(UrbAtl_Pol, UA_Raster,field = "ID_Cls")
 #plot the raster
 levelplot(UA_Raster)
 
+#### not needed ###############################################################################################
 # export as tiff
 write_stars(UA_Raster, "4.Results\\UrbAtl_Pol_ras.tif")
 
@@ -59,7 +59,8 @@ UrbAtl_Pol_ras <- "4.Results\\UrbAtl_Pol_ras.tif"
 #load raster
 UA_Raster <- raster(UA_Raster)
 
-# do whatever shit
+###############################################################################################################
+# computation on disc in case of large rasterfari
 options_landscapemetrics(to_disk = TRUE)
 
 #check feasability of data
@@ -69,9 +70,9 @@ check_landscape(UA_Raster)
 show_landscape(UA_Raster, discrete = TRUE)
 
 
-# calculate all metrics on patch level
+# calculate all metrics on (?) level
 calculate_lsm(UA_Raster)
-lsm_tibble <- calculate_lsm(UA_Raster, level = c("patch"), type = "aggregation metric")
+lsm_tibble <- calculate_lsm(UA_Raster, level = c("class"), type = "aggregation metric")
 
 
 
@@ -89,7 +90,8 @@ POINT <- st_as_sf(data.frame(lon = WuLoc$geom[[1]][1], lat = WuLoc$geom[[1]][2])
 circle_all = sample_lsm(UA_Raster,
                         y = POINT,
                         size = 50,
-                        type = "aggregation metric",
+                        level = "class",
+                        type = c("area and edge metric","core area metric","aggregation metric"),
                         shape = "circle")
 circle_all
 
@@ -116,4 +118,19 @@ Svenja <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Svenja
 Svenja_FdF_Raw <- getVoteRaw(Svenja) %>% CountClassPerc()
 
 #intersect with UA classes
-CircleArea <- st_intersection(UrbAtl_Pol[,"SumClass"], buf.a)
+Svenja_Int <- st_intersection(Svenja_FdF_Raw[,"Val_ID"], circle_all_full_names$metric)
+
+ggscatter(circle_all, x = "value", y = "metric", 
+          add = "reg.line", conf.int = TRUE, 
+          cor.coef = TRUE, cor.method = "pearson",
+          xlab = "Sound Class", ylab = "Max Value")
+
+
+res.cor <- correlate(circle_all)
+res.cor
+
+
+
+
+
+
