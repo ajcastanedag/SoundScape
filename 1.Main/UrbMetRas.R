@@ -72,7 +72,7 @@ show_landscape(UA_Raster, discrete = TRUE)
 
 # calculate all metrics on (?) level
 calculate_lsm(UA_Raster)
-lsm_tibble <- calculate_lsm(UA_Raster, level = c("class"), type = "aggregation metric")
+lsm_tibble <- calculate_lsm(UA_Raster, level = c("class"), type = "aggregation metric", full_name = T)
 
 
 
@@ -90,9 +90,10 @@ POINT <- st_as_sf(data.frame(lon = WuLoc$geom[[1]][1], lat = WuLoc$geom[[1]][2])
 circle_all = sample_lsm(UA_Raster,
                         y = POINT,
                         size = 50,
-                        level = "class",
-                        type = c("area and edge metric","core area metric","aggregation metric"),
-                        shape = "circle")
+                        level = "patch",
+                        type = c("shape metric"),
+                        shape = "circle",
+                        full_name = T)
 circle_all
 
 # look at the results
@@ -108,29 +109,15 @@ metrics <- calculate_lsm(UA_Raster, what = c("patch", "class"))
 show_correlation(data= circle_all["metric"], method = "pearson")
 
 ################################################################################
-# correlation tests
+# NDVI
 ################################################################################
-Svenja <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Svenja.txt"))
 
-#
-# Make a data frame that counts the frequency of available classes and transform
-# it into % using the raw data set to compare the impact of the summary methodology
-Svenja_FdF_Raw <- getVoteRaw(Svenja) %>% CountClassPerc()
-
-#intersect with UA classes
-Svenja_Int <- st_intersection(Svenja_FdF_Raw[,"Val_ID"], circle_all_full_names$metric)
-
-ggscatter(circle_all, x = "value", y = "metric", 
+library("ggpubr")
+ggscatter(NSSounds, x = "NDVI", y = "NsProcent", 
           add = "reg.line", conf.int = TRUE, 
           cor.coef = TRUE, cor.method = "pearson",
-          xlab = "Sound Class", ylab = "Max Value")
+          xlab = "NDVI", ylab = "NSProcent")
 
-
-res.cor <- correlate(circle_all)
-res.cor
-
-
-
-
-
+res2 <-cor.test(NSSounds$NDVI, NSSounds$SHDI,  method = "spearman")
+res2
 

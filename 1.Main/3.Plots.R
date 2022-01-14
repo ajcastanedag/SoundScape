@@ -18,6 +18,8 @@ Ringpark_See <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_
 Main_Kuh <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Main_Kuh.txt"))
 TestData01A <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Test01SA.TXT"))
 TestData01B <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Test01SB.TXT"))
+DATA_TextorStr <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_TextorStr.txt"))
+DATA_RingP_B <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_RingP_B"))
 ################################################################################
 # Using points and single field
 single(TestData01A[TestData01A$Gs>0.4,],"Ts")#Ts,Ns,Gs,Hs
