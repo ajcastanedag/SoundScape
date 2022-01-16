@@ -1,15 +1,25 @@
-
+#results folder with csvs
 ResultsFo <- "C:\\Users\\nilsk\\Desktop\\Soundscape_Git\\SoundScape\\4.Results"
-GSSounds <- read.csv(file = '4.Results/GSSounds.csv')
-BSSounds <- read_csv(file = "4.Results/BSSounds.csv", sep = ';')
-HSSounds <- read_csv(file = "4.Results/HSSounds.csv")
-BSSounds <- read_csv(file = "4.Results/BSSounds.csv")
 
+#libs
 library("ggpubr")
-ggscatter(GSSounds, x = "BD", y = "Sound_share", 
+
+
+#data
+
+BSSounds <- read.csv2("C:/Users/nilsk/Desktop/Soundscape_Git/SoundScape/4.Results/BSSounds.csv")
+GSSounds <- read.csv2("C:/Users/nilsk/Desktop/Soundscape_Git/SoundScape/4.Results/GSSounds.csv")
+HSSounds <- read.csv2("C:/Users/nilsk/Desktop/Soundscape_Git/SoundScape/4.Results/HSSounds.csv")
+TSSounds <- read.csv2("C:/Users/nilsk/Desktop/Soundscape_Git/SoundScape/4.Results/TSSounds.csv")
+
+
+#pearson
+ggscatter(GSSounds, x = "NDVI", y = "Sound_share", 
           add = "reg.line", conf.int = TRUE, 
           cor.coef = TRUE, cor.method = "pearson")
           #xlab = "NDVI", ylab = "Sound share")
+
+
 
 res2 <-cor.test(GSSounds$BD, GSSounds$Sound_share,  method = "spearman")
 res2
