@@ -7,19 +7,20 @@ ExportFo <- paste0(MainFo,"\\4.Results\\")
 # Load functions file
 source(paste0(MainFo,"\\1.Main\\2.Functions.R"))
 ################################################################################
-Penny <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Penny.txt"))
-Svenja <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Svenja.txt"))
-Ringpark <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Ringpark.txt"))
-Loewenbruecke <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_LoewenB.txt"))
-Jenseits <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Jenseits.txt"))
-Markt <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Markt.txt"))
-Nicola_Park <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Nicola.txt"))
-Ringpark_See <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Ringpark_See.txt"))
-Main_Kuh <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Main_Kuh.txt"))
+L1 <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Ringpark.txt"))
+L2 <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Nicola.txt"))
+L3 <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Ringpark_See.txt"))
+L4 <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Penny.txt"))
+L5 <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Svenja.txt"))
+L6 <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_LoewenB.txt"))
+L7 <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Jenseits.txt"))
+L8 <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Markt.txt"))
+L9 <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Main_Kuh.txt"))
 TestData01A <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Test01SA.TXT"))
 TestData01B <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Test01SB.TXT"))
-DATA_TextorStr <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_TextorStr.txt"))
-DATA_RingP_B <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_RingP_B"))
+L10 <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_TextorStr.txt"))
+L11 <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_RingP_B.txt"))
+L12 <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Sebastian.txt"))
 ################################################################################
 # Using points and single field
 single(TestData01A[TestData01A$Gs>0.4,],"Ts")#Ts,Ns,Gs,Hs
@@ -61,22 +62,21 @@ ggsave(filename=paste0(ExportFo,"Stripes_TestB.png"), plot, device = "png", dpi 
 
 # Make a summary of the data based on a window size (10 in this case), note that 
 # if length(Data) %% size != 0 it wont run so you can crop it manually by indexing
-Ringpark_See_R <- reduce(Ringpark_See[1:61160,],10)
+L1_R <- reduce(L1[1:61544,],8)
 
 ################################################################################
 # Function to get the high segmented sound per DateTime creating two fields, one 
 # with the highest value and the other one with the class that corresponds to that
 # value
-Ringpark_See_V <- getVote(Ringpark_See_R)
+L1_V <- getVote(L1_R)
 ################################################################################
 # Make a data frame that counts the frequency of available classes and transform
 # it into %. The used data frame in this function is the summericed one, not the
 # raw one
-Ringpark_See_FdF <- CountClassPerc(Ringpark_See_V)
+L1_FdF <- CountClassPerc(L1_V)
 ################################################################################
 # Make a data frame that counts the frequency of available classes and transform
-# it into % using the raw data set to compare the impact of the summary methodology
-Ringpark_See_FdF_Raw <- getVoteRaw(Ringpark_See) %>% CountClassPerc()
+L12_FdF_Raw <- getVoteRaw(L12) %>% CountClassPerc()
 ################################################################################
 # Plot that shit
 plot2 <- ggplot(Ringpark_See_V) +
