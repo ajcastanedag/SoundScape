@@ -16,11 +16,12 @@ L6 <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_LoewenB.tx
 L7 <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Jenseits.txt"))
 L8 <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Markt.txt"))
 L9 <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Main_Kuh.txt"))
-TestData01A <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Test01SA.TXT"))
-TestData01B <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Test01SB.TXT"))
 L10 <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_TextorStr.txt"))
 L11 <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_RingP_B.txt"))
 L12 <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Sebastian.txt"))
+
+TestA <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\TESTOS_A.txt"))
+TestB <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\TESTOS_B.txt"))
 ################################################################################
 # Using points and single field
 single(TestData01A[TestData01A$Gs>0.4,],"Ts")#Ts,Ns,Gs,Hs
@@ -33,12 +34,12 @@ ras(Penny[Penny$Gs>0.4,],"Gs","Spectral")
 ################################################################################
 
 #creating new summrizing DF
-Penny2 <- data.frame(DateTime=TestData01B[,1],Val_ID=NA,Val=NA)
+Penny2 <- data.frame(DateTime=L61[,1],Val_ID=NA,Val=NA)
 
 #loopinh through classification results returning the maxima of the classification values
 for(i in 1:length(Penny2$DateTime)){
-  Penny2$Val[i] <- max(TestData01B[i,c(-1,-2,-2)])
-  Penny2$Val_ID[i] <- names(TestData01B[i,c(-1,-2,-2)])[which(TestData01B[i,c(-1,-2,-2)] == Penny2$Val[i])]
+  Penny2$Val[i] <- max(L61[i,c(-1,-2,-2)])
+  Penny2$Val_ID[i] <- names(L61[i,c(-1,-2,-2)])[which(L61[i,c(-1,-2,-2)] == Penny2$Val[i])]
 }
 
 #plotting of the classification maximas
