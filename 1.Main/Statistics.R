@@ -12,30 +12,26 @@ GSSounds <- read.csv2("C:/Users/nilsk/Desktop/Soundscape_Git/SoundScape/4.Result
 HSSounds <- read.csv2("C:/Users/nilsk/Desktop/Soundscape_Git/SoundScape/4.Results/HSSounds.csv")
 TSSounds <- read.csv2("C:/Users/nilsk/Desktop/Soundscape_Git/SoundScape/4.Results/TSSounds.csv")
 
-
-#variables ensemble
-EnsembleDF <- BSSounds
-
-
-
 #cleaning
 GSSounds <- GSSounds[-c(13:15), ]
 HSSounds <- HSSounds[-c(13:15), ]
 TSSounds <- TSSounds[-c(13:15), ]
 
-EnsembleDF$BS_share <- BSSounds[,2]
-EnsembleDF$GS_share <- GSSounds[,2]
-EnsembleDF$HS_share <- HSSounds[,2]
-EnsembleDF$TS_share <- TSSounds[,2]
+#variables ensemble
+EnsembleDF <- GSSounds
+names(EnsembleDF) <- c("Station","HS_Share","NDVI","BD","DB","RD","DR","LPI","LSI","PD","SHDI")
 
-#drop share
-EnsembleDF$Sound_share <- NULL
-EnsembleDF$ï..Location <- NULL
-EnsembleDF
+EnsembleDF$BS_Share <- BSSounds$Sound_share
+EnsembleDF$TS_Share <- TSSounds$Sound_share
+EnsembleDF$HS_Share <- HSSounds$Sounds_share
+EnsembleDF$GS_Share <- GSSounds$Sound_share
 
-#reorder by column
-EnsembleDF <- EnsembleDF[, c(13,12,11,10,1,2,3,4,5,6,7,8,9)]
-EnsembleDF
+#sort dat shit
+EnsembleDF <- EnsembleDF[, c(14,13,12,11,2,3,4,5,6,7,8,9,10)]
+
+ggplot(EnsembleDF, aes(x=GS_Share, y=BD))+
+  geom_point()
+
 
 
 #pearson
@@ -61,16 +57,32 @@ corrplot(cor(EnsembleDF),
 res2 <-cor.test(GSSounds$BD, GSSounds$Sound_share,  method = "spearman")
 res2
 
+
+#multiple regression
 install.packages("performance")
 install.packages("see")
 library(performance)
 library(see)
 
-mode2 <- lm(BS_share ~ LSI + LPI + PD,
+mode3 <- lm(BS_share ~ NDVI + DR + PD + BD + DB + SHDI,
              data = EnsembleDF
 )
 
-summary(mode2)
+summary(mode3)
 
+check_model(mode3)
 
-check_model(model2)
+#multiple variable plot
+ggplot(EnsembleDF) +
+  aes(x = NDVI, y = BS_share, colour = DR, size = PD) +
+  geom_point() +
+  scale_color_gradient() +
+  labs(
+    y = "BS_Share",
+    x = "NDVI",
+    color = "DR",
+    size = "PD"
+  ) +
+  theme_minimal()
+
+write.csv2(EnsembleDF,"C:/Users/nilsk/Desktop/Soundscape_Git/SoundScape/4.Results/EnsembleDF.csv")
