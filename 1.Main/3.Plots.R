@@ -1,7 +1,7 @@
 ################################################################################
 # Structure
 MainFo <- "C:\\Users\\nilsk\\Desktop\\Soundscape_Git\\SoundScape"
-MainFo <- "C:\\Users\\COWBOYBEBOP\\Desktop\\SoundScape"
+MainFo <- "D:\\Master\\0.Documents\\RProjects\\SoundScape"
 ExportFo <- paste0(MainFo,"\\4.Results\\")
 
 # Load functions file
@@ -19,9 +19,6 @@ L9 <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Main_Kuh.t
 L10 <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_TextorStr.txt"))
 L11 <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_RingP_B.txt"))
 L12 <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\DATA_Sebastian.txt"))
-
-TestA <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\TESTOS_A.txt"))
-TestB <- LoadFile(paste0(MainFo,"\\2.SampleData\\SoundSegmentation\\TESTOS_B.txt"))
 ################################################################################
 # Using points and single field
 single(TestData01A[TestData01A$Gs>0.4,],"Ts")#Ts,Ns,Gs,Hs
