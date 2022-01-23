@@ -34,7 +34,7 @@ plot(EntropyWz[,c("class_2018","MFE")])
 #buffer locations and get areas#
 
 # accessing the location df
-POINT <- st_as_sf(data.frame(lon = WuLoc$geom[[1]][1], lat = WuLoc$geom[[1]][2]), coords = c('lon', 'lat'))
+POINT <- st_as_sf(data.frame(lon = WuLoc$geom[[2]][1], lat = WuLoc$geom[[2]][2]), coords = c('lon', 'lat'))
 
 #define a buffer area
 buf.a <- st_buffer(POINT, 50)
@@ -43,7 +43,7 @@ buf.a <- st_buffer(POINT, 50)
 st_crs(buf.a) <- st_crs(UrbAtl_Pol)
 
 #intersect with UA classes
-CircleArea <- st_intersection(UrbAtl_Pol[,"SumClass"], buf.a)
+CircleArea <- st_intersection(UrbAtl_Pol[,"area"], buf.a)#SumClass
 
 #calculate areas
 CircleArea$area <- st_area(CircleArea)

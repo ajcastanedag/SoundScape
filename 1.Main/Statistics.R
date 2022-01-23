@@ -29,6 +29,9 @@ EnsembleDF$GS_Share <- GSSounds$Sound_share
 #sort dat shit
 EnsembleDF <- EnsembleDF[, c(14,13,12,11,2,3,4,5,6,7,8,9,10)]
 
+#Ensemble variables only
+EnsembleDFVar <- EnsembleDF[, c(5,6,7,8,9,10,11,12,13)]
+
 ggplot(EnsembleDF, aes(x=GS_Share, y=BD))+
   geom_point()
 
@@ -47,7 +50,7 @@ round(cor(EnsembleDF),
 )
 
 # improved correlation matrix
-corrplot(cor(EnsembleDF),
+corrplot(cor(EnsembleDFVar),
          method = "number",
          type = "upper" # show only upper side
 )
@@ -64,13 +67,13 @@ install.packages("see")
 library(performance)
 library(see)
 
-mode3 <- lm(BS_share ~ NDVI + DR + PD + BD + DB + SHDI,
+mode4 <- lm(TS_Share ~ NDVI + DR +RD + BD + PD + SHDI,
              data = EnsembleDF
 )
 
-summary(mode3)
+summary(mode4)
 
-check_model(mode3)
+check_model(mode4)
 
 #multiple variable plot
 ggplot(EnsembleDF) +
@@ -86,3 +89,29 @@ ggplot(EnsembleDF) +
   theme_minimal()
 
 write.csv2(EnsembleDF,"C:/Users/nilsk/Desktop/Soundscape_Git/SoundScape/4.Results/EnsembleDF.csv")
+
+library(ggstatsplot)
+
+ggcoefstats(mode4)
+
+
+#anova
+boxplot(EnsembleDF$TS_Share~EnsembleDF$GS_Share, 
+        main="Boxplot comparing Mileage of Four Brands of Tyre", 
+        col= rainbow(4), 
+        horizontal = TRUE)
+
+ggplot(EnsembleDF, aes(reorder(Station,BD),NDVI,fill=Station))+
+  # ggplot(tyre, aes(Brands,Mileage,fill=Brands))+ # if you want to leave them alphabetic
+  geom_jitter(colour = "dark gray",width=.1) +
+  stat_boxplot(geom ='errorbar',width = 0.4) +
+  geom_boxplot()+
+  labs(title="SEM Plot", 
+       x = "Stations (sorted)",
+       y = "NDVI (in thousands)",
+       subtitle ="Gray dots=sample data points, Black dot=outlier, Blue dot=mean, Red=99% confidence interval",
+       caption = "Data from https://datascienceplus.com/one-way-anova-in-r/") +
+  guides(fill=FALSE) +
+  stat_summary(fun.data = "mean_cl_normal", colour = "red", size = 1.5, fun.args = list(conf.int=.99)) +
+  stat_summary(geom="point", fun.y=mean, color="blue") +
+  theme_bw()
