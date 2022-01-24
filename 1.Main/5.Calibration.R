@@ -96,3 +96,18 @@ plotB
 CrossTable(as.factor(TestB$Reference),as.factor(TestB$Predicted))
 ################################################################################
 confusionMatrix(as.factor(TestB$Predicted), as.factor(TestB$Reference), positive = "True")
+
+
+
+#################################################################################################################
+#################################################################################################################
+#plotting accuracy matrix
+
+# improved correlation matrix
+corrplot(cor(EnsembleDFVar),
+         method = "number",
+         type = "upper" # show only upper side
+)
+
+
+
